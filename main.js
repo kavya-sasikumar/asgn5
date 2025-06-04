@@ -82,7 +82,7 @@ scene.add(debugCube);
 
 // Textured Rotating Cubes
 const textureLoader = new THREE.TextureLoader();
-const texture = textureLoader.load('./assets/texture.jpg');
+const texture = textureLoader.load('texture.jpg');
 const cubeMaterial = new THREE.MeshStandardMaterial({ map: texture });
 
 const cubes = [];
