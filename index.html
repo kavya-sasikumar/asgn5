@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Three.js Assignment 5</title>
+
+  <!-- Set up Import Maps -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.149.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body style="margin: 0; overflow: hidden;">
+
+  <!-- Floating Mode Label UI -->
+  <div id="mode-label" style="
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    font-family: sans-serif;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    z-index: 10;
+  ">
+    Day Mode
+  </div>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>
