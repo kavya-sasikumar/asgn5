@@ -98,7 +98,7 @@ for (let i = 0; i < 5; i++) {
 // Load .glb Model 
 const gltfLoader = new GLTFLoader();
 gltfLoader.load(
-  './assets/model.glb',
+  'model.glb',
   (gltf) => {
     const model = gltf.scene;
     model.position.set(0, 0, -3);
