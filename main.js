@@ -19,7 +19,7 @@ controls.update();
 
 // Load Skybox 
 const skybox = new THREE.CubeTextureLoader()
-  .setPath('assets/skybox/')
+  // .setPath('assets/skybox/')
   .load([
     'px.jpg', 'nx.jpg',
     'py.jpg', 'ny.jpg',
