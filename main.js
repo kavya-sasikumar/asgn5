@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-// Scene, Camera, Renderer 
+// === Scene, Camera, Renderer ===
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.set(0, 5, 15);
@@ -12,22 +12,20 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 document.body.appendChild(renderer.domElement);
 
-// Orbit Controls 
+// === Controls ===
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.target.set(0, 0, 0);
 controls.update();
 
-// Load Skybox 
-const skybox = new THREE.CubeTextureLoader()
-  // .setPath('assets/skybox/')
-  .load([
-    'px.jpg', 'nx.jpg',
-    'py.jpg', 'ny.jpg',
-    'pz.jpg', 'nz.jpg'
-  ]);
-scene.background = skybox; 
+// === Skybox ===
+const skybox = new THREE.CubeTextureLoader().load([
+  'px.jpg', 'nx.jpg',
+  'py.jpg', 'ny.jpg',
+  'pz.jpg', 'nz.jpg'
+]);
+scene.background = skybox;
 
-// Lights 
+// === Lights ===
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
 scene.add(ambientLight);
 
@@ -51,7 +49,6 @@ dirLight.castShadow = true;
 dirLight.shadow.mapSize.set(1024, 1024);
 scene.add(dirLight);
 
-// Debug Directional Light
 const debugLight = new THREE.DirectionalLight(0xffffff, 0.8);
 debugLight.position.set(5, 10, -5);
 debugLight.castShadow = true;
@@ -61,7 +58,7 @@ debugLight.target.position.set(0, 0, 0);
 scene.add(debugLight);
 scene.add(debugLight.target);
 
-// Ground Plane
+// === Ground ===
 const debugGround = new THREE.Mesh(
   new THREE.PlaneGeometry(40, 40),
   new THREE.MeshStandardMaterial({ color: 0x222222 })
@@ -71,7 +68,7 @@ debugGround.position.y = -2;
 debugGround.receiveShadow = true;
 scene.add(debugGround);
 
-// Debug Cube
+// === Debug Cube ===
 const debugCube = new THREE.Mesh(
   new THREE.BoxGeometry(1, 1, 1),
   new THREE.MeshStandardMaterial({ color: 0x00ffcc })
@@ -80,7 +77,7 @@ debugCube.position.set(-3, 0, 0);
 debugCube.castShadow = true;
 scene.add(debugCube);
 
-// Textured Rotating Cubes
+// === Textured Cubes ===
 const textureLoader = new THREE.TextureLoader();
 const texture = textureLoader.load('texture.jpg');
 const cubeMaterial = new THREE.MeshStandardMaterial({ map: texture });
@@ -95,7 +92,7 @@ for (let i = 0; i < 5; i++) {
   cubes.push(cube);
 }
 
-// Load .glb Model 
+// === Load GLB Model ===
 const gltfLoader = new GLTFLoader();
 gltfLoader.load(
   'model.glb',
@@ -117,7 +114,7 @@ gltfLoader.load(
   }
 );
 
-// 20+ Extra Shapes 
+// === Extra Shapes ===
 const shapes = [];
 const shapeGeometries = [
   new THREE.BoxGeometry(),
@@ -133,6 +130,7 @@ const shapeMaterials = [
   new THREE.MeshStandardMaterial({ color: 0x228b22 }),
   new THREE.MeshStandardMaterial({ color: 0xffff00 })
 ];
+
 for (let i = 0; i < 20; i++) {
   const geometry = shapeGeometries[i % shapeGeometries.length];
   const material = shapeMaterials[i % shapeMaterials.length].clone();
@@ -148,7 +146,7 @@ for (let i = 0; i < 20; i++) {
   shapes.push(shape);
 }
 
-// Click to Change Color
+// === Click to Change Color ===
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 window.addEventListener('click', (event) => {
@@ -162,9 +160,8 @@ window.addEventListener('click', (event) => {
   }
 });
 
-// Day/Night Mode 
+// === Day/Night Mode ===
 let isDay = true;
-
 function setDayMode() {
   isDay = true;
   ambientLight.intensity = 0.2;
@@ -173,9 +170,9 @@ function setDayMode() {
   spotLight.intensity = 0.5;
   debugLight.intensity = 0.8;
   scene.background = skybox;
-  document.getElementById('mode-label').textContent = 'Day Mode';
+  const label = document.getElementById('mode-label');
+  if (label) label.textContent = 'Day Mode';
 }
-
 function setNightMode() {
   isDay = false;
   ambientLight.intensity = 0.05;
@@ -183,20 +180,16 @@ function setNightMode() {
   pointLight.intensity = 0.3;
   spotLight.intensity = 0.25;
   debugLight.intensity = 0.4;
-  scene.background = new THREE.Color(0x0d1b2a); 
-  document.getElementById('mode-label').textContent = 'Night Mode';
+  scene.background = new THREE.Color(0x0d1b2a);
+  const label = document.getElementById('mode-label');
+  if (label) label.textContent = 'Night Mode';
 }
-
 window.addEventListener('keydown', (event) => {
-  if (event.key === 'd' || event.key === 'D') {
-    setDayMode();
-  }
-  if (event.key === 'n' || event.key === 'N') {
-    setNightMode();
-  }
+  if (event.key.toLowerCase() === 'd') setDayMode();
+  if (event.key.toLowerCase() === 'n') setNightMode();
 });
 
-// Animation Loop
+// === Animate ===
 function animate() {
   requestAnimationFrame(animate);
   cubes.forEach(cube => {
@@ -209,9 +202,10 @@ function animate() {
 }
 animate();
 
-// Handle Resize
+// === Handle Resize ===
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
